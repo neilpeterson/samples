@@ -21,26 +21,27 @@ pool:
 
 stages:
 
+# Run ARM TTK and publish test results
 - stage: staticanalysis
 
-#   jobs:
-#   - job: tests
-#     pool: Hosted Ubuntu 1604
-#     continueOnError: false
-#     timeoutInMinutes: 20
+  jobs:
+  - job: armttk
+    pool: Hosted Ubuntu 1604
+    continueOnError: false
+    timeoutInMinutes: 20
 
-#     steps:
+    steps:
 
-#     Temp test, replace this with ARM TTK / Python Test Suite?
-#     - task: PowerShell@2
-#       displayName: Install Pester
-#       inputs:
-#         targetType: 'inline'
-#         script: |
-#           Find-Module pester | Install-Module -Force
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world'
 
+# Create template spec and deploy
 - stage: deploy
-  # dependsOn: build
+  dependsOn: staticanalysis
 
   jobs:
   - job: arm
@@ -75,12 +76,40 @@ stages:
          id=$(az ts show --name $(spec) --version $(spec-version) --resource-group $(resource-group) --query id -o tsv)
          az deployment group create --resource-group $(resource-group) --template-spec $id
         
+# Perform any validation on the deployment
 - stage: integrationtest
   dependsOn: deploy
 
-  # This stage could be generalized 
+  jobs:
+  - job: integration
+    pool: Hosted Ubuntu 1604
+    continueOnError: false
+    timeoutInMinutes: 20
 
+    steps:
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world'
+
+# Clean up deployment
 - stage: cleanup
   dependsOn: deploy
 
-  # This stage would remove the deployment
+  jobs:
+  - job: integration
+    pool: Hosted Ubuntu 1604
+    continueOnError: false
+    timeoutInMinutes: 20
+
+    steps:
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world'
