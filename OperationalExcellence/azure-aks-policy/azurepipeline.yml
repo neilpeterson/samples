@@ -66,6 +66,14 @@ stages:
     #       echo $(AZURE_MANAGED_IDENTITY_NAME)
     #       echo $(AZURE_COSMOS_DB)
     #       echo $(AZURE_CONTAINER_REGISTRY)
+    
+    
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'azure-service-connection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az group create --name test123 --location eastus'
 
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
