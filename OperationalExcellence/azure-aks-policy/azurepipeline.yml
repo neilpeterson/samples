@@ -74,7 +74,7 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         # inlineScript: 'az group create --name test123 --location eastus'
-        inlineScript: az group deployment create --help
+        inlineScript: az ts --help
     
     # - task: AzureResourceManagerTemplateDeployment@3
     #   inputs:
