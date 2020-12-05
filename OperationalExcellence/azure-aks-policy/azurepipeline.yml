@@ -21,7 +21,7 @@ pool:
 
 stages:
 
-- stage: static-analysis
+- stage: staticanalysis
 
 #   jobs:
 #   - job: tests
@@ -75,12 +75,12 @@ stages:
          id=$(az ts show --name $(spec) --version $(spec-version) --resource-group $(resource-group) --query id -o tsv)
          az deployment group create --resource-group $(resource-group) --template-spec $id
         
-- stage: integration-test
+- stage: integrationtest
   dependsOn: deploy
 
   # This stage could be generalized 
 
-- stage: clean-up
+- stage: cleanup
   dependsOn: deploy
 
   # This stage would remove the deployment
