@@ -1,3 +1,5 @@
+# Notes: can I use the validation API with linke template .via uri function?
+
 trigger:
   branches:
     include:
@@ -7,6 +9,8 @@ trigger:
       - OperationalExcellence/azure-aks-policy/*
 
 variables:
+- name: serviceConnection
+  value: azure-service-connection-mg
 - name: resource-group
   value: aks-policy-$(Build.BuildId)
 - name: location
@@ -32,12 +36,15 @@ stages:
 
     steps:
 
-    - task: Bash@3
+
+    - task: AzureCLI@2
+      displayName: 'Download ARM Template Tester Toolkit'
       inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world'
+        azureSubscription: $(serviceConnection)
+        scriptType: 'pscore'
+        scriptLocation: 'inlineScript'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+        inlineScript: 'curl https://azurequickstartsservice.blob.core.windows.net/ttk/latest/arm-template-toolkit.zip --output arm-template-toolkit.zip --silent'
 
 # Create template spec and deploy
 - stage: deploy
@@ -53,7 +60,7 @@ stages:
     - task: AzureCLI@2
       # Create resource group
       inputs:
-        azureSubscription: 'azure-service-connection-mg'
+        azureSubscription: $(serviceConnection)
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az group create --name $(resource-group) --location $(location)'
@@ -61,7 +68,7 @@ stages:
     - task: AzureCLI@2
       # Create template spec
       inputs:
-        azureSubscription: 'azure-service-connection-mg'
+        azureSubscription: $(serviceConnection)
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az ts create --name $(spec) --version $(spec-version) --resource-group $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
@@ -69,7 +76,7 @@ stages:
     - task: AzureCLI@2
       # Deploy template spec
       inputs:
-        azureSubscription: 'azure-service-connection-mg'
+        azureSubscription: $(serviceConnection)
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
@@ -110,7 +117,7 @@ stages:
     - task: AzureCLI@2
       # Delete resource group
       inputs:
-        azureSubscription: 'azure-service-connection-mg'
+        azureSubscription: $(serviceConnection)
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az group delete --resource-group $(resource-group) --yes --no-wait' 
