@@ -49,7 +49,7 @@ stages:
       # Create resource group
       inputs:
         azureSubscription: 'azure-service-connection'
-        scriptType: 'batch'
+        scriptType: 'shell'
         scriptLocation: 'inlineScript'
         inlineScript: 'az group create $(resource-group) --location $(location)'
         
@@ -57,7 +57,7 @@ stages:
       # Create template spec
       inputs:
         azureSubscription: 'azure-service-connection'
-        scriptType: 'batch'
+        scriptType: 'shell'
         scriptLocation: 'inlineScript'
         inlineScript: 'az ts create --name $(spec) --version "1" \
           --resource-grouo $(resource-group) --location $(location) \
