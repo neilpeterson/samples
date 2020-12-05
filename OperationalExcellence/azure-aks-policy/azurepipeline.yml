@@ -6,24 +6,14 @@ trigger:
     include:
       - OperationalExcellence/azure-aks-policy/*
 
+variables:
+- name: resource-group
+  value: aks-policy 
+- name: location
+  value: eastus
+
 pool:
   vmImage: 'ubuntu-latest'
-
-# variables:
-# - group: 'twitter-app'
-
-  # # Azure
-  # azureSubscription: azure-service-connection
-
-  # # Container Registry
-  # AZURE_CONTAINER_REGISTRY: nepetersacr008
-  # AZURE_CONTAINER_REGISTRY_FQDN: nepetersacr008.azurecr.io
-  # AZURE_MANAGED_IDENTITY_NAME: ninernep001
-  # AZURE_KUBERNETES_SERVICE: ninernep003
-  # AZURE_STORAGE_ACCT: ninernep004
-  # AZURE_RESOURCE_GROUP: ninernep005
-  # AZURE_COSMOS_DB: ninernep006
-  # AZURE_ANALYTICS: ninernep007
 
 stages:
 
@@ -45,7 +35,7 @@ stages:
 #         script: |
 #           Find-Module pester | Install-Module -Force
 
-- stage: infrastructure_pre_production
+- stage: deploy
   # dependsOn: build
 
   jobs:
@@ -53,43 +43,23 @@ stages:
     pool: Hosted Ubuntu 1604
     continueOnError: false
 
-    steps:
-
-    # - task: Bash@3
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       echo $(AZURE_RESOURCE_GROUP)
-    #       echo $(AZURE_KUBERNETES_SERVICE)
-    #       echo $(AZURE_STORAGE_ACCT)
-    #       echo $(AZURE_ANALYTICS)
-    #       echo $(AZURE_MANAGED_IDENTITY_NAME)
-    #       echo $(AZURE_COSMOS_DB)
-    #       echo $(AZURE_CONTAINER_REGISTRY)
-    
+    steps:    
     
     - task: AzureCLI@2
+      # Create resource group
       inputs:
         azureSubscription: 'azure-service-connection'
-        scriptType: 'bash'
+        scriptType: 'batch'
         scriptLocation: 'inlineScript'
-        # inlineScript: 'az group create --name test123 --location eastus'
-        inlineScript: az ts --help
-    
-    # - task: AzureResourceManagerTemplateDeployment@3
-    #   inputs:
-    #     deploymentScope: 'Resource Group'
-    #     azureResourceManagerConnection: 'azure-service-connection'
-    #     subscriptionId: '3762d87c-ddb8-425f-b2fc-29e5e859edaf'
-    #     action: 'Create Or Update Resource Group'
-    #     resourceGroupName: 'test123'
-    #     location: 'East US'
-    #     templateLocation: 'Linked artifact'
-    #     csmFile: './OperationalExcellence/azure-aks-policy/azuredeploy.json'
-    #     # overrideParameters: '-aksName "$(AZURE_KUBERNETES_SERVICE)" -storageAccountName "$(AZURE_STORAGE_ACCT)" -cognitiveName "$(AZURE_ANALYTICS)" -scriptIdentity "$(AZURE_MANAGED_IDENTITY_NAME)" -cosmosName "$(AZURE_COSMOS_DB)" -acrName "$(AZURE_CONTAINER_REGISTRY)"'
-    #     deploymentMode: 'Incremental'
-
-# scratch 
-
-# az ts create --name aks-policy --version 1.0 --resource-group test123 --location eastus --template-file OperationalExcellence/azure-aks-policy/azuredeploy.json
-# az ts show --resource-group test123 --name aks-policy --query id -o tsv
+        inlineScript: 'az group create $(resource-group) --location $(location)'
+        
+    - task: AzureCLI@2
+      # Create template spec
+      inputs:
+        azureSubscription: 'azure-service-connection'
+        scriptType: 'batch'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az ts create --name $(spec) --version "1" \
+          --resource-grouo $(resource-group) --location $(location) \
+          --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json 
+        
