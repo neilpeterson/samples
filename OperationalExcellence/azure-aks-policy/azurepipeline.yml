@@ -77,7 +77,7 @@ stages:
          az deployment group create --resource-group $(resource-group) --template-spec $id
         
 # Perform any validation on the deployment
-- stage: integrationtest
+- stage: integration
   dependsOn: deploy
 
   jobs:
@@ -97,7 +97,7 @@ stages:
 
 # Clean up deployment
 - stage: cleanup
-  dependsOn: deploy
+  dependsOn: integration
 
   jobs:
   - job: integration
@@ -107,9 +107,10 @@ stages:
 
     steps:
 
-    - task: Bash@3
+    - task: AzureCLI@2
+      # Delete resource group
       inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world'
+        azureSubscription: 'azure-service-connection-mg'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az group delete --resource-group $(resource-group) --yes --no-wait' 
