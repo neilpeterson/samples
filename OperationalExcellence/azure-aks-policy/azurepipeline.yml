@@ -72,4 +72,4 @@ stages:
         inlineScript: |
          id=$(az ts show --name $(spec) --version 1 --resource-group $(resource-group) --query id -o tsv)
          echo $id
-         # az deployment group create --resource-group $(resource-group) --template-spec $id
+         az deployment group create --resource-group $(resource-group) --template-spec $id
