@@ -68,22 +68,28 @@ stages:
     #       echo $(AZURE_CONTAINER_REGISTRY)
     
     
-    # - task: AzureCLI@2
-    #   inputs:
-    #     azureSubscription: 'azure-service-connection'
-    #     scriptType: 'bash'
-    #     scriptLocation: 'inlineScript'
-    #     inlineScript: 'az group create --name test123 --location eastus'
-
-    - task: AzureResourceManagerTemplateDeployment@3
+    - task: AzureCLI@2
       inputs:
-        deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'azure-service-connection'
-        subscriptionId: '3762d87c-ddb8-425f-b2fc-29e5e859edaf'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'test123'
-        location: 'East US'
-        templateLocation: 'Linked artifact'
-        csmFile: './OperationalExcellence/azure-aks-policy/azuredeploy.json'
-        # overrideParameters: '-aksName "$(AZURE_KUBERNETES_SERVICE)" -storageAccountName "$(AZURE_STORAGE_ACCT)" -cognitiveName "$(AZURE_ANALYTICS)" -scriptIdentity "$(AZURE_MANAGED_IDENTITY_NAME)" -cosmosName "$(AZURE_COSMOS_DB)" -acrName "$(AZURE_CONTAINER_REGISTRY)"'
-        deploymentMode: 'Incremental'
+        azureSubscription: 'azure-service-connection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        # inlineScript: 'az group create --name test123 --location eastus'
+        inlineScript: az group deployment create --help
+    
+    # - task: AzureResourceManagerTemplateDeployment@3
+    #   inputs:
+    #     deploymentScope: 'Resource Group'
+    #     azureResourceManagerConnection: 'azure-service-connection'
+    #     subscriptionId: '3762d87c-ddb8-425f-b2fc-29e5e859edaf'
+    #     action: 'Create Or Update Resource Group'
+    #     resourceGroupName: 'test123'
+    #     location: 'East US'
+    #     templateLocation: 'Linked artifact'
+    #     csmFile: './OperationalExcellence/azure-aks-policy/azuredeploy.json'
+    #     # overrideParameters: '-aksName "$(AZURE_KUBERNETES_SERVICE)" -storageAccountName "$(AZURE_STORAGE_ACCT)" -cognitiveName "$(AZURE_ANALYTICS)" -scriptIdentity "$(AZURE_MANAGED_IDENTITY_NAME)" -cosmosName "$(AZURE_COSMOS_DB)" -acrName "$(AZURE_CONTAINER_REGISTRY)"'
+    #     deploymentMode: 'Incremental'
+
+# scratch 
+
+# az ts create --name aks-policy --version 1.0 --resource-group test123 --location eastus --template-file OperationalExcellence/azure-aks-policy/azuredeploy.json
+# az ts show --resource-group test123 --name aks-policy --query id -o tsv
