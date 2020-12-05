@@ -61,5 +61,5 @@ stages:
         azureSubscription: 'azure-service-connection'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az ts create --name $(spec) --version "1" --resource-grouo $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
+        inlineScript: 'az ts create --name $(spec) --version "1" --resource-group $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
         
