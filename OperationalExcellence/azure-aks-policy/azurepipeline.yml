@@ -51,7 +51,7 @@ stages:
         azureSubscription: 'azure-service-connection'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az group create --resouce-group $(resource-group) --location $(location)'
+        inlineScript: 'az group create --name $(resource-group) --location $(location)'
         
     - task: AzureCLI@2
       # Create template spec
