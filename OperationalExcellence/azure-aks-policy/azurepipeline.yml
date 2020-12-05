@@ -8,7 +8,7 @@ trigger:
 
 variables:
 - name: resource-group
-  value: aks-policy-four
+  value: aks-policy-five
 - name: location
   value: eastus
 - name: spec
