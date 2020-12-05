@@ -53,15 +53,15 @@ stages:
         destinationFolder: '$(System.DefaultWorkingDirectory)/arm-template-toolkit'
         cleanDestinationFolder: true
 
-    - task: PowerShell@2
-      displayName: 'Run ARM Template Toolkit'
-      inputs:
-        targetType: 'inline'
-        script: |
-          Import-Module ./arm-ttk.psd1
-          Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Test deploymentTemplate
-        pwsh: true
-        workingDirectory: '$(System.DefaultWorkingDirectory)/arm-template-toolkit/arm-ttk'
+    # - task: PowerShell@2
+    #   displayName: 'Run ARM Template Toolkit'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       Import-Module ./arm-ttk.psd1
+    #       Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Test deploymentTemplate
+    #     pwsh: true
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/arm-template-toolkit/arm-ttk'
 
 # Create template spec and deploy
 - stage: deploy
@@ -88,7 +88,7 @@ stages:
         azureSubscription: $(serviceConnection)
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az ts create --name $(spec) --version $(spec-version) --resource-group $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
+        inlineScript: 'az ts create --name $(spec) --version $(spec-version) --resource-group $(resource-group) --location $(location) --template-file $(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
         
     - task: AzureCLI@2
       displayName: Deploy template spec
