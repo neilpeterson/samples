@@ -8,7 +8,7 @@ trigger:
 
 variables:
 - name: resource-group
-  value: aks-policy 
+  value: aks-policy-two 
 - name: location
   value: eastus
 - name: spec
@@ -63,3 +63,12 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: 'az ts create --name $(spec) --version "1" --resource-group $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
         
+    - task: AzureCLI@2
+      # Get template spec id
+      inputs:
+        azureSubscription: 'azure-service-connection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+         'id=(az ts show --name $(spec) --version "1" --resource-group $(resource-group)' 
+         'az deployment group create --resource-group $(resource-group) --template-spec $id'
