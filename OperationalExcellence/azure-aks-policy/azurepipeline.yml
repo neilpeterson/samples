@@ -51,7 +51,7 @@ stages:
         azureSubscription: 'azure-service-connection'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az group create test-2020 --location eastus'
+        inlineScript: 'az group create --resouce-group $(resource-group) --location $(location)'
         
     - task: AzureCLI@2
       # Create template spec
@@ -60,6 +60,6 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az ts create --name $(spec) --version "1" \
-          --resource-grouo test-2020 --location $(location) \
+          --resource-grouo $(resource-group) --location $(location) \
           --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
         
