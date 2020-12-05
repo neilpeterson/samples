@@ -69,6 +69,5 @@ stages:
         azureSubscription: 'azure-service-connection'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: |
-         'id=(az ts show --name $(spec) --version "1" --resource-group $(resource-group))' 
-         'az deployment group create --resource-group $(resource-group) --template-spec $id'
+        inlineScript: 'id=(az ts show --name $(spec) --version "1" --resource-group $(resource-group))' 
+         # 'az deployment group create --resource-group $(resource-group) --template-spec $id'
