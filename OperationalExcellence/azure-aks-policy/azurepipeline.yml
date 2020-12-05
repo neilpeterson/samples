@@ -11,6 +11,8 @@ variables:
   value: aks-policy 
 - name: location
   value: eastus
+- name: spec
+  value: aks-policy
 
 pool:
   vmImage: 'ubuntu-latest'
