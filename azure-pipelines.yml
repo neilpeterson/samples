@@ -55,17 +55,17 @@ stages:
 
     steps:
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo $(AZURE_RESOURCE_GROUP)
-          echo $(AZURE_KUBERNETES_SERVICE)
-          echo $(AZURE_STORAGE_ACCT)
-          echo $(AZURE_ANALYTICS)
-          echo $(AZURE_MANAGED_IDENTITY_NAME)
-          echo $(AZURE_COSMOS_DB)
-          echo $(AZURE_CONTAINER_REGISTRY)
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo $(AZURE_RESOURCE_GROUP)
+    #       echo $(AZURE_KUBERNETES_SERVICE)
+    #       echo $(AZURE_STORAGE_ACCT)
+    #       echo $(AZURE_ANALYTICS)
+    #       echo $(AZURE_MANAGED_IDENTITY_NAME)
+    #       echo $(AZURE_COSMOS_DB)
+    #       echo $(AZURE_CONTAINER_REGISTRY)
 
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
