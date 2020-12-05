@@ -68,18 +68,18 @@ stages:
     #       echo $(AZURE_CONTAINER_REGISTRY)
     
     
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'azure-service-connection'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az group create --name test123 --location eastus'
+    # - task: AzureCLI@2
+    #   inputs:
+    #     azureSubscription: 'azure-service-connection'
+    #     scriptType: 'bash'
+    #     scriptLocation: 'inlineScript'
+    #     inlineScript: 'az group create --name test123 --location eastus'
 
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'azure-service-connection'
-        subscriptionId: '10a09851-d632-420e-ad20-2cd774fd4d41'
+        subscriptionId: '3762d87c-ddb8-425f-b2fc-29e5e859edaf'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'test123'
         location: 'East US'
