@@ -21,7 +21,7 @@ pool:
 
 stages:
 
-# - stage: test
+- stage: static-analysis
 
 #   jobs:
 #   - job: tests
@@ -74,3 +74,13 @@ stages:
         inlineScript: |
          id=$(az ts show --name $(spec) --version $(spec-version) --resource-group $(resource-group) --query id -o tsv)
          az deployment group create --resource-group $(resource-group) --template-spec $id
+        
+- stage: integration-test
+  dependsOn: deploy
+
+  # This stage could be generalized 
+
+- stage: clean-up
+  dependsOn: deploy
+
+  # This stage would remove the deployment
