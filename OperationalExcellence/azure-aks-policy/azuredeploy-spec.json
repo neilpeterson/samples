@@ -3,8 +3,6 @@
     "contentVersion": "1.0.0.0",
     "parameters": { },
     "variables": {
-        "aks-template": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/azuredeploy-aks.json')]",
-        "aks-policies-template": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/azuredeploy-aks-policies.json')]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -15,8 +13,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('aks-template')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "nestedtemplates/azuredeploy-aks.json"
                 },
                 "parameters": {
                     "location": {
@@ -32,8 +29,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('aks-policies-template')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "nestedtemplates/azuredeploy-aks-policies.json"
                 }
             }
         }
