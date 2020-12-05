@@ -8,11 +8,13 @@ trigger:
 
 variables:
 - name: resource-group
-  value: aks-policy-five
+  value: aks-policy-$(Build.BuildId)
 - name: location
   value: eastus
 - name: spec
   value: aks-policy
+- name: spec-version
+  value: $(Build.BuildId)
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -61,14 +63,14 @@ stages:
         azureSubscription: 'azure-service-connection-mg'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az ts create --name $(spec) --version "1" --resource-group $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
+        inlineScript: 'az ts create --name $(spec) --version $(spec-version) --resource-group $(resource-group) --location $(location) --template-file OperationalExcellence/azure-aks-policy/azuredeploy-spec.json' 
         
     - task: AzureCLI@2
-      # Get template spec id
+      # Deploy template spec
       inputs:
         azureSubscription: 'azure-service-connection-mg'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-         id=$(az ts show --name $(spec) --version 1 --resource-group $(resource-group) --query id -o tsv)
+         id=$(az ts show --name $(spec) --version $(spec-version) --resource-group $(resource-group) --query id -o tsv)
          az deployment group create --resource-group $(resource-group) --template-spec $id
