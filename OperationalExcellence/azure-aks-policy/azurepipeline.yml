@@ -35,23 +35,29 @@ stages:
     timeoutInMinutes: 20
 
     steps:
-
-
-    - task: AzureCLI@2
-      displayName: 'Download ARM Template Tester Toolkit'
+    
+    - task: RunARMTTKTests@1
       inputs:
-        azureSubscription: $(serviceConnection)
-        scriptType: 'pscore'
-        scriptLocation: 'inlineScript'
-        workingDirectory: $(System.DefaultWorkingDirectory)
-        inlineScript: 'curl https://azurequickstartsservice.blob.core.windows.net/ttk/latest/arm-template-toolkit.zip --output arm-template-toolkit.zip --silent'
+        templatelocation: '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/*'
+        resultLocation: '$(System.DefaultWorkingDirectory)'
+        skipTests: 'Location-Should-Not-Be-Hardcoded'
 
-    - task: ExtractFiles@1
-      displayName: 'Extract ARM Template Toolkit'
-      inputs:
-        archiveFilePatterns: '$(System.DefaultWorkingDirectory)/arm-template-toolkit.zip'
-        destinationFolder: '$(System.DefaultWorkingDirectory)/arm-template-toolkit'
-        cleanDestinationFolder: true
+
+    # - task: AzureCLI@2
+    #   displayName: 'Download ARM Template Tester Toolkit'
+    #   inputs:
+    #     azureSubscription: $(serviceConnection)
+    #     scriptType: 'pscore'
+    #     scriptLocation: 'inlineScript'
+    #     workingDirectory: $(System.DefaultWorkingDirectory)
+    #     inlineScript: 'curl https://azurequickstartsservice.blob.core.windows.net/ttk/latest/arm-template-toolkit.zip --output arm-template-toolkit.zip --silent'
+
+    # - task: ExtractFiles@1
+    #   displayName: 'Extract ARM Template Toolkit'
+    #   inputs:
+    #     archiveFilePatterns: '$(System.DefaultWorkingDirectory)/arm-template-toolkit.zip'
+    #     destinationFolder: '$(System.DefaultWorkingDirectory)/arm-template-toolkit'
+    #     cleanDestinationFolder: true
 
     # - task: PowerShell@2
     #   displayName: 'Run ARM Template Toolkit'
