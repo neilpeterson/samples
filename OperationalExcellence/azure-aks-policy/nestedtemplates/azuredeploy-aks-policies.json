@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": { },
+    "variables": {
+       "policy-pod-labels": "/providers/Microsoft.Authorization/policyDefinitions/46592696-4c7b-4bf3-9e45-6c2763bdc0a6",
+       "policy-allowed-images": "/providers/Microsoft.Authorization/policyDefinitions/febd0533-8e55-448f-b837-bd0e06f16469"
+    },
     "resources": [
         {
             "apiVersion": "2019-09-01",
@@ -9,7 +13,7 @@
             "name": "allowed-images",
             "properties": {
                 "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
-                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/febd0533-8e55-448f-b837-bd0e06f16469",
+                "policyDefinitionId": "[variables('policy-allowed-images')]",
                 "parameters": {
                     "allowedContainerImagesRegex": {
                         "value": "nginx"
@@ -33,7 +37,7 @@
             "name": "pod-labels",
             "properties": {
                 "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
-                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/46592696-4c7b-4bf3-9e45-6c2763bdc0a6",
+                "policyDefinitionId": "[variables('policy-pod-labels')]",
                 "parameters": {
                     "labelsList": {
                         "value": ["test"]
