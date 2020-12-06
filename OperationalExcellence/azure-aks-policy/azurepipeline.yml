@@ -31,44 +31,51 @@ stages:
 
   jobs:
   - job: armttk
-    pool: Hosted Ubuntu 1604
+    pool:
+      vmImage: 'windows-latest'
     continueOnError: false
     timeoutInMinutes: 20
 
     steps:
     
-    - task: PowerShell@2
-      displayName: Install Pester
+    - task: RunARMTTKTests@1
       inputs:
-        targetType: 'inline'
-        script: |
-          Find-Module pester | Install-Module -Force
+        templatelocation: '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/*'
+        resultLocation: '$(System.DefaultWorkingDirectory)'
+        skipTests: 'Location-Should-Not-Be-Hardcoded,IDs-Should-Be-Derived-From-ResourceIDs'
     
-    - task: AzureCLI@2
-      displayName: 'Download ARM Template Tester Toolkit'
-      inputs:
-        azureSubscription: $(serviceConnection)
-        scriptType: 'pscore'
-        scriptLocation: 'inlineScript'
-        workingDirectory: $(System.DefaultWorkingDirectory)
-        inlineScript: 'curl https://azurequickstartsservice.blob.core.windows.net/ttk/latest/arm-template-toolkit.zip --output arm-template-toolkit.zip --silent'
+    # - task: PowerShell@2
+    #   displayName: Install Pester
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       Find-Module pester -MaximumVersion 4.10.2 | Install-Module -Force
+    
+    # - task: AzureCLI@2
+    #   displayName: 'Download ARM Template Tester Toolkit'
+    #   inputs:
+    #     azureSubscription: $(serviceConnection)
+    #     scriptType: 'pscore'
+    #     scriptLocation: 'inlineScript'
+    #     workingDirectory: $(System.DefaultWorkingDirectory)
+    #     inlineScript: 'curl https://azurequickstartsservice.blob.core.windows.net/ttk/latest/arm-template-toolkit.zip --output arm-template-toolkit.zip --silent'
 
-    - task: ExtractFiles@1
-      displayName: 'Extract ARM Template Toolkit'
-      inputs:
-        archiveFilePatterns: '$(System.DefaultWorkingDirectory)/arm-template-toolkit.zip'
-        destinationFolder: '$(System.DefaultWorkingDirectory)/arm-template-toolkit'
-        cleanDestinationFolder: true
+    # - task: ExtractFiles@1
+    #   displayName: 'Extract ARM Template Toolkit'
+    #   inputs:
+    #     archiveFilePatterns: '$(System.DefaultWorkingDirectory)/arm-template-toolkit.zip'
+    #     destinationFolder: '$(System.DefaultWorkingDirectory)/arm-template-toolkit'
+    #     cleanDestinationFolder: true
 
-    - task: PowerShell@2
-      displayName: 'Run ARM Template Toolkit'
-      inputs:
-        targetType: 'inline'
-        script: |
-          Import-Module ./arm-ttk.psd1
-          Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Skip "Location-Should-Not-Be-Hardcoded","IDs-Should-Be-Derived-From-ResourceIDs"
-        pwsh: true
-        workingDirectory: '$(System.DefaultWorkingDirectory)/arm-template-toolkit/arm-ttk'
+    # - task: PowerShell@2
+    #   displayName: 'Run ARM Template Toolkit'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       Import-Module ./arm-ttk.psd1
+    #       Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Skip "Location-Should-Not-Be-Hardcoded","IDs-Should-Be-Derived-From-ResourceIDs"
+    #     pwsh: true
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/arm-template-toolkit/arm-ttk'
 
 # Create template spec and deploy
 - stage: deploy
