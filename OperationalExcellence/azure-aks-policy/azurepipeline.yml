@@ -44,7 +44,7 @@ stages:
       inputs:
         templatelocation: '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/*'
         resultLocation: '$(System.DefaultWorkingDirectory)'
-        skipTests: $(ttk-skip-test)
+        # skipTests: $(ttk-skip-test)
         
     - task: PublishTestResults@2
       inputs:
