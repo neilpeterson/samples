@@ -43,7 +43,13 @@ stages:
         templatelocation: '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/*'
         resultLocation: '$(System.DefaultWorkingDirectory)'
         skipTests: 'Location-Should-Not-Be-Hardcoded,IDs-Should-Be-Derived-From-ResourceIDs'
-    
+        
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
+      condition: always()
+
     # - task: PowerShell@2
     #   displayName: Install Pester
     #   inputs:
