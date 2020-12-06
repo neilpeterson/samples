@@ -9,6 +9,8 @@ products:
 
 # Azure Well Architected Framework Sample: Azure Policy for Azure Kubernetes Service (AKS)
 
+[![Build Status](https://nepeters-devops.visualstudio.com/arm-template-validation-pipelines/_apis/build/status/aks-policy-arm-pipeline?branchName=refs%2Fpull%2F3%2Fmerge)](https://nepeters-devops.visualstudio.com/arm-template-validation-pipelines/_build/latest?definitionId=121&branchName=refs%2Fpull%2F3%2Fmerge)
+
 Azure Policy extends Gatekeeper v3, an admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure Policy makes it possible to manage and report on the compliance state of your Kubernetes clusters from one place.
 
 In this sample, an AKS cluster is deployed, a policy applied to the cluster that only allows specific images to run in the cluster, and some steps are detailed that you can follow to experience an Azure Policy protected AKS cluster.
