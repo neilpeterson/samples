@@ -55,6 +55,7 @@ stages:
 # Create template spec and deploy
 - stage: deploy
   # dependsOn: staticanalysis
+  dependsOn: []
 
   jobs:
   - job: arm
