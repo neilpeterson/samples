@@ -37,6 +37,13 @@ stages:
 
     steps:
     
+    - task: PowerShell@2
+      displayName: Install Pester
+      inputs:
+        targetType: 'inline'
+        script: |
+          Find-Module pester | Install-Module -Force
+    
     - task: AzureCLI@2
       displayName: 'Download ARM Template Tester Toolkit'
       inputs:
@@ -59,7 +66,7 @@ stages:
         targetType: 'inline'
         script: |
           Import-Module ./arm-ttk.psd1
-          Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Skip "Location-Should-Not-Be-Hardcoded","IDs-Should-Be-Derived-From-ResourceIDs"
+          Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Skip "Location-Should-Not-Be-Hardcoded","IDs-Should-Be-Derived-From-ResourceIDs" -Pester
         pwsh: true
         workingDirectory: '$(System.DefaultWorkingDirectory)/arm-template-toolkit/arm-ttk'
 
