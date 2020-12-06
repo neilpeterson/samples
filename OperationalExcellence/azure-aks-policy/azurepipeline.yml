@@ -66,7 +66,7 @@ stages:
         targetType: 'inline'
         script: |
           Import-Module ./arm-ttk.psd1
-          Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Skip "Location-Should-Not-Be-Hardcoded","IDs-Should-Be-Derived-From-ResourceIDs" -Pester
+          Test-AzTemplate -TemplatePath '$(System.DefaultWorkingDirectory)/OperationalExcellence/azure-aks-policy/' -Skip "Location-Should-Not-Be-Hardcoded","IDs-Should-Be-Derived-From-ResourceIDs"
         pwsh: true
         workingDirectory: '$(System.DefaultWorkingDirectory)/arm-template-toolkit/arm-ttk'
 
@@ -107,7 +107,7 @@ stages:
          id=$(az ts show --name $(spec) --version $(spec-version) --resource-group $(resource-group) --query id -o tsv)
          az deployment group create --resource-group $(resource-group) --template-spec $id
         
-# Perform any validation on the deployment
+# Perform validation on the deployment
 - stage: integration
   dependsOn: deploy
 
