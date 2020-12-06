@@ -53,8 +53,8 @@ stages:
       condition: always()
 
 # Create template spec and deploy
-- stage: deploy
-  # dependsOn: staticanalysis
+# This runs regardless of TTK results
+- stage: Test deployment
   dependsOn: []
 
   jobs:
