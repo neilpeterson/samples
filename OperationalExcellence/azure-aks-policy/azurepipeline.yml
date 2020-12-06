@@ -54,7 +54,7 @@ stages:
 
 # Create template spec and deploy
 # This runs regardless of TTK results
-- stage: Test deployment
+- stage: deployment
   dependsOn: []
 
   jobs:
