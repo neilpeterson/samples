@@ -21,7 +21,7 @@ variables:
 - name: spec-version
   value: $(Build.BuildId)
 - name: ttk-skip-test
-  value: 'Location-Should-Not-Be-Hardcoded'
+  value: 'Location-Should-Not-Be-Hardcoded,IDs-Should-Be-Derived-From-ResourceIDs'
 
 pool:
   vmImage: 'ubuntu-latest'
