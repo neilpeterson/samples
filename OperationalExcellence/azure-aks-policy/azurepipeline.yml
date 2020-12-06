@@ -47,7 +47,7 @@ stages:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
+        testResultsFiles: '$(System.DefaultWorkingDirectory)\*-armttk.xml'
       condition: always()
 
     # - task: PowerShell@2
