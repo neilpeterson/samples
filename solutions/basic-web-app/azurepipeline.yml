@@ -54,14 +54,20 @@ stages:
 
     steps:
     
-    - task: RunARMTTKTests@1
-      inputs:
-        templatelocation: '$(System.DefaultWorkingDirectory)$(template-location)'
-        resultLocation: '$(System.DefaultWorkingDirectory)'
-        skipTests: $(ttk-skip-test)
+    # - task: RunARMTTKTests@1
+    #   inputs:
+    #     templatelocation: '$(System.DefaultWorkingDirectory)$(template-location)'
+    #     resultLocation: '$(System.DefaultWorkingDirectory)'
+    #     skipTests: $(ttk-skip-test)
         
-    - task: PublishTestResults@2
+    # - task: PublishTestResults@2
+    #   inputs:
+    #     testResultsFormat: 'NUnit'
+    #     testResultsFiles: '$(System.DefaultWorkingDirectory)\*-armttk.xml'
+    #   condition: always()
+    
+    - task: PowerShell@2
       inputs:
-        testResultsFormat: 'NUnit'
-        testResultsFiles: '$(System.DefaultWorkingDirectory)\*-armttk.xml'
-      condition: always()
+        targetType: 'inline'
+        script: |
+          if((Test-Path $env:BUILD_ARTIFACTSTAGINGDIRECTORY\arm-ttk\arm-ttk) -eq $false){git clone https://github.com/Azure/arm-ttk.git --quiet $env:BUILD_ARTIFACTSTAGINGDIRECTORY\arm-ttk}
